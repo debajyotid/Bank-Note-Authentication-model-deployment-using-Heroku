@@ -8,6 +8,11 @@ The features were extracted from images that were taken from genuine and forged 
 
 This is a simple classification problem without much requirement for feature engineering. With a default RandomForest Classifier model, we were able to achieve >99% validation accuracy. The trained model is then saved as a .pkl file (classifier.pkl) for later use.
 
-We use the flask_api.py file to invoke a GUI based interface built using Flasgger. We need to install flasgger and import Swagger library from the same. In the first instance, we create a predict_note_authentication with get() to load the pre-trained model (saved as classifier.pkl) to provide the prediction for a single input. While invoking predict_note_authentication, we call the /predict method and the pass the features in the invoking URL itself (as we have used get()): http://127.0.0.1:5000/predict?variance=2&skewness=3&curtosis=2&entropy=1. This returns the prediction as: "Hello The answer is: [0].
+In this scenario, we use Streamlit to render a new webpage using the template provided, and then deploy this entire framework on Heroku to have a anytime available web-based application. Thus Heroku helps us leverage Cloud services for deployment, while Streamlit helps in creating a webpage for interaction with the web-app in both a developer-friendly, as well as a user-friendly way. The app.py structure is still same, invoking a predict_note_authentication() with the features extracted from the Streamlit based web-page, to loading the pre-trained model (saved as classifier.pkl) to provide the prediction.
 
-We can also test the model on a test dataset: TestFile.csv, which we pass to the model using another method predict_note_file() which is invoked using POST() this time, as we have a file and we can't pass all the features via a single URL. This is also available via the Swagger UI.
+To run this, we need to execute this app.py file using StreamLit from CLI, using the command "streamlit run api.py", when running locally. However, as in this case we will be run through Heroku, so some additonal changes will be needed.
+
+We need to create the below files:
+1. setup.sh: This is a bash file, which helps create our StreamLit environment on Heroku.
+2. procfile: This is a standard file required for Heroku deployment, telling how to deploy the application and which methods to execute. we mention here that we wish to run the "setup.sh" file and thereon we wish to run the command "streamlit run app.py" like we were running when executing the app locally
+3. requirements.txt: once again a standard Heroku deployment file, highlighting the environmental requirements for running the python app on Heroku instance.
